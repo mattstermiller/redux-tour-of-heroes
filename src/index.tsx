@@ -1,18 +1,35 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import Hello from './containers/Hello';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import { enthusiasm } from './reducers/index';
-import { StoreState } from './types/index';
+import * as actions from './actions';
+import Hello from './Hello';
 
 import './index.css';
 
-const store = createStore<StoreState, any, any, any>(enthusiasm, {
-  enthusiasmLevel: 1,
+export interface StoreState {
+  languageName: string;
+  enthusiasmLevel: number;
+}
+
+const initialState : StoreState = {
   languageName: 'TypeScript',
-});
+  enthusiasmLevel: 1,
+}
+
+function reducer(state: StoreState, action: actions.EnthusiasmAction): StoreState {
+  switch (action.type) {
+    case actions.INCREMENT_ENTHUSIASM:
+      return { ...state, enthusiasmLevel: state.enthusiasmLevel + 1 };
+    case actions.DECREMENT_ENTHUSIASM:
+      return { ...state, enthusiasmLevel: Math.max(1, state.enthusiasmLevel - 1) };
+    default:
+      return state;
+  }
+}
+
+const store = createStore<StoreState, any, any, any>(reducer, initialState);
 
 ReactDOM.render(
   <Provider store={store}>
