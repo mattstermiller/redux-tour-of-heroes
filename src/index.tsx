@@ -8,17 +8,17 @@ import Hello from './Hello';
 
 import './index.css';
 
-export interface StoreState {
+export interface State {
   languageName: string;
   enthusiasmLevel: number;
 }
 
-const initialState : StoreState = {
+const initialState : State = {
   languageName: 'TypeScript',
   enthusiasmLevel: 1,
 }
 
-function reducer(state: StoreState, action: actions.EnthusiasmAction): StoreState {
+function reducer(state: State, action: actions.EnthusiasmAction): State {
   switch (action.type) {
     case actions.INCREMENT_ENTHUSIASM:
       return { ...state, enthusiasmLevel: state.enthusiasmLevel + 1 };
@@ -29,7 +29,7 @@ function reducer(state: StoreState, action: actions.EnthusiasmAction): StoreStat
   }
 }
 
-const store = createStore<StoreState, any, any, any>(reducer, initialState);
+const store = createStore<State, any, any, any>(reducer, initialState);
 
 ReactDOM.render(
   <Provider store={store}>

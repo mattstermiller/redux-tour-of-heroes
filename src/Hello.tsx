@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { StoreState } from './index';
+import { State } from './index';
 import * as actions from './actions';
 import './Hello.css';
 
@@ -34,7 +34,7 @@ export function Hello({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: P
   );
 }
 
-function mapState({ enthusiasmLevel, languageName }: StoreState) {
+function mapState({ enthusiasmLevel, languageName }: State) {
   return {
     enthusiasmLevel,
     name: languageName,
