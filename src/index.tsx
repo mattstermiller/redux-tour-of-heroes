@@ -9,7 +9,7 @@ import { StoreState } from './types/index';
 
 import './index.css';
 
-const store = createStore<StoreState>(enthusiasm, {
+const store = createStore<StoreState, any, any, any>(enthusiasm, {
   enthusiasmLevel: 1,
   languageName: 'TypeScript',
 });
