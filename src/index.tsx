@@ -6,24 +6,32 @@ import { createStore } from 'redux';
 import * as actions from './actions';
 import App from './App';
 import Hero from './hero'
+import { HEROES } from './mock-heroes';
 
 import './index.css';
 
 export interface State {
-  hero: Hero
+  heroes: Hero[],
+  editHero: Hero | null,
 }
 
 const initialState : State = {
-  hero: {
-    id: 1,
-    name: "Windstorm",
-  }
+  heroes: HEROES,
+  editHero: null,
 }
 
 function reducer(state: State, action: actions.HeroAction): State {
   switch (action.type) {
     case actions.NAME_CHANGE:
-      return { ...state, hero: {...state.hero, name: action.name } };
+      if (state.editHero) {
+        let editHero = {...state.editHero, name: action.name };
+        let heroes = state.heroes.map(h => h.id === editHero.id ? editHero : h);
+        return { ...state, editHero: editHero, heroes: heroes };
+      } else {
+        return state;
+      }
+    case actions.HERO_SELECT:
+      return { ...state, editHero: action.hero };
     default:
       return state;
   }
