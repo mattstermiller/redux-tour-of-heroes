@@ -5,25 +5,25 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import * as actions from './actions';
 import App from './App';
+import Hero from './hero'
 
 import './index.css';
 
 export interface State {
-  languageName: string;
-  enthusiasmLevel: number;
+  hero: Hero
 }
 
 const initialState : State = {
-  languageName: 'TypeScript',
-  enthusiasmLevel: 1,
+  hero: {
+    id: 1,
+    name: "Windstorm",
+  }
 }
 
-function reducer(state: State, action: actions.EnthusiasmAction): State {
+function reducer(state: State, action: actions.HeroAction): State {
   switch (action.type) {
-    case actions.INCREMENT_ENTHUSIASM:
-      return { ...state, enthusiasmLevel: state.enthusiasmLevel + 1 };
-    case actions.DECREMENT_ENTHUSIASM:
-      return { ...state, enthusiasmLevel: Math.max(1, state.enthusiasmLevel - 1) };
+    case actions.NAME_CHANGE:
+      return { ...state, hero: {...state.hero, name: action.name } };
     default:
       return state;
   }

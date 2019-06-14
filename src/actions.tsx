@@ -1,27 +1,13 @@
-export const INCREMENT_ENTHUSIASM = 'INCREMENT_ENTHUSIASM';
-export type INCREMENT_ENTHUSIASM = typeof INCREMENT_ENTHUSIASM;
+export const NAME_CHANGE = 'NAME_CHANGE';
+export type NAME_CHANGE = typeof NAME_CHANGE;
 
-export const DECREMENT_ENTHUSIASM = 'DECREMENT_ENTHUSIASM';
-export type DECREMENT_ENTHUSIASM = typeof DECREMENT_ENTHUSIASM;
-
-export interface IncrementEnthusiasm {
-    type: INCREMENT_ENTHUSIASM;
+export interface NameChange {
+    type: NAME_CHANGE;
+    name: string
 }
 
-export interface DecrementEnthusiasm {
-    type: DECREMENT_ENTHUSIASM;
-}
+export type HeroAction = NameChange;
 
-export type EnthusiasmAction = IncrementEnthusiasm | DecrementEnthusiasm;
-
-export function incrementEnthusiasm(): IncrementEnthusiasm {
-    return {
-        type: INCREMENT_ENTHUSIASM
-    };
-}
-
-export function decrementEnthusiasm(): DecrementEnthusiasm {
-    return {
-        type: DECREMENT_ENTHUSIASM
-    };
+export function nameChange(name: string): NameChange {
+    return { type: NAME_CHANGE, name };
 }
