@@ -48,11 +48,9 @@ function mapState({ heroes, editHero }: State) {
   return { heroes, editHero };
 }
 
-function mapDispatch(dispatch: Dispatch<actions.HeroAction>) {
-  return {
-    onNameChange: (name: string) => dispatch(actions.nameChange(name)),
-    onHeroSelect: (hero: Hero) => dispatch(actions.heroSelect(hero)),
-  };
+const mapDispatch = {
+  onNameChange: actions.nameChange,
+  onHeroSelect: actions.heroSelect,
 }
 
 export default connect(mapState, mapDispatch)(Heroes);
