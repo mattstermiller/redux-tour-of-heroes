@@ -1,18 +1,16 @@
 import Hero from './hero';
 
 export const LOAD_HEROES = 'LOAD_HEROES';
-export type LOAD_HEROES = typeof LOAD_HEROES;
 export interface LoadHeroes {
-    type: LOAD_HEROES;
+    type: typeof LOAD_HEROES;
 }
 export function loadHeroes(): LoadHeroes {
     return { type: LOAD_HEROES };
 }
 
 export const CHANGE_NAME = 'CHANGE_NAME';
-export type CHANGE_NAME = typeof CHANGE_NAME;
 export interface ChangeName {
-    type: CHANGE_NAME;
+    type: typeof CHANGE_NAME;
     name: string
 }
 export function changeName(name: string): ChangeName {
@@ -20,9 +18,8 @@ export function changeName(name: string): ChangeName {
 }
 
 export const SELECT_HERO = 'SELECT_HERO';
-export type SELECT_HERO = typeof SELECT_HERO;
 export interface SelectHero {
-    type: SELECT_HERO;
+    type: typeof SELECT_HERO;
     hero: Hero
 }
 export function selectHero(hero: Hero): SelectHero {
