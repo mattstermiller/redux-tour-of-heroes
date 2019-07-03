@@ -10,10 +10,10 @@ import './Heroes.css';
 interface Props {
   heroes: Hero[];
   editHero: Hero | null;
-  onHeroSelect?: (hero: Hero) => void;
+  selectHero?: (hero: Hero) => void;
 }
 
-export function Heroes({ heroes, editHero, onHeroSelect=(() => null) }: Props) {
+export function Heroes({ heroes, editHero, selectHero=(() => null) }: Props) {
   return (
     <div>
       <h2>My Heroes</h2>
@@ -22,7 +22,7 @@ export function Heroes({ heroes, editHero, onHeroSelect=(() => null) }: Props) {
           <li
             key={hero.id}
             className={hero === editHero ? "selected" : ""}
-            onClick={() => onHeroSelect(hero)}
+            onClick={() => selectHero(hero)}
             >
             <span className="badge">{hero.id}</span> {hero.name}
           </li>
@@ -38,7 +38,7 @@ function mapState({ heroes, editHero }: State) {
 }
 
 const mapDispatch = {
-  onHeroSelect: actions.heroSelect,
+  selectHero: actions.selectHero,
 }
 
 export default connect(mapState, mapDispatch)(Heroes);

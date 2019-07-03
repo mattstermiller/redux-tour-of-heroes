@@ -22,7 +22,7 @@ const initialState : State = {
 
 function reducer(state: State, action: actions.HeroAction): State {
   switch (action.type) {
-    case actions.NAME_CHANGE:
+    case actions.CHANGE_NAME:
       if (state.editHero) {
         let editHero = {...state.editHero, name: action.name };
         let heroes = state.heroes.map(h => h.id === editHero.id ? editHero : h);
@@ -30,7 +30,7 @@ function reducer(state: State, action: actions.HeroAction): State {
       } else {
         return state;
       }
-    case actions.HERO_SELECT:
+    case actions.SELECT_HERO:
       return { ...state, editHero: action.hero };
     default:
       return state;

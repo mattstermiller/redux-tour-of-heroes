@@ -8,10 +8,10 @@ import './Heroes.css';
 
 interface Props {
   editHero: Hero | null;
-  onNameChange?: (name: string) => void;
+  changeName?: (name: string) => void;
 }
 
-export function HeroDetail({ editHero, onNameChange=(() => null) }: Props) {
+export function HeroDetail({ editHero, changeName=(() => null) }: Props) {
   if (editHero) {
     return (
       <div className="hero">
@@ -19,7 +19,7 @@ export function HeroDetail({ editHero, onNameChange=(() => null) }: Props) {
         <div><span>id: </span>{editHero.id}</div>
         <div>
           <label>name:
-            <input placeholder="name" value={editHero.name} onChange={e => onNameChange(e.target.value)}/>
+            <input placeholder="name" value={editHero.name} onChange={e => changeName(e.target.value)}/>
           </label>
         </div>
       </div>
@@ -34,7 +34,7 @@ function mapState({ editHero }: State) {
 }
 
 const mapDispatch = {
-  onNameChange: actions.nameChange,
+  changeName: actions.changeName,
 }
 
 export default connect(mapState, mapDispatch)(HeroDetail);

@@ -1,27 +1,27 @@
 import Hero from './hero';
 
-export const NAME_CHANGE = 'NAME_CHANGE';
-export type NAME_CHANGE = typeof NAME_CHANGE;
+export const CHANGE_NAME = 'CHANGE_NAME';
+export type CHANGE_NAME = typeof CHANGE_NAME;
 
-export interface NameChange {
-    type: NAME_CHANGE;
+export interface ChangeName {
+    type: CHANGE_NAME;
     name: string
 }
 
-export const HERO_SELECT = 'HERO_SELECT';
-export type HERO_SELECT = typeof HERO_SELECT;
+export const SELECT_HERO = 'SELECT_HERO';
+export type SELECT_HERO = typeof SELECT_HERO;
 
-export interface HeroSelect {
-    type: HERO_SELECT;
+export interface SelectHero {
+    type: SELECT_HERO;
     hero: Hero
 }
 
-export type HeroAction = NameChange | HeroSelect;
+export type HeroAction = ChangeName | SelectHero;
 
-export function nameChange(name: string): NameChange {
-    return { type: NAME_CHANGE, name };
+export function changeName(name: string): ChangeName {
+    return { type: CHANGE_NAME, name };
 }
 
-export function heroSelect(hero: Hero): HeroSelect {
-    return { type: HERO_SELECT, hero };
+export function selectHero(hero: Hero): SelectHero {
+    return { type: SELECT_HERO, hero };
 }
