@@ -8,7 +8,7 @@ function App() {
       <div className="App-header">
         <h1>Tour of Heroes</h1>
       </div>
-      <Heroes />
+      <Heroes/>
     </div>
   );
 }

@@ -1,20 +1,19 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { State } from './index';
 import * as actions from './actions';
 import Hero from './hero';
+import HeroDetail from './HeroDetail'
 
 import './Heroes.css';
 
-export interface Props {
+interface Props {
   heroes: Hero[];
   editHero: Hero | null;
-  onNameChange?: (name: string) => void;
   onHeroSelect?: (hero: Hero) => void;
 }
 
-export function Heroes({ heroes, editHero, onNameChange=(() => null), onHeroSelect=(() => null) }: Props) {
+export function Heroes({ heroes, editHero, onHeroSelect=(() => null) }: Props) {
   return (
     <div>
       <h2>My Heroes</h2>
@@ -29,17 +28,7 @@ export function Heroes({ heroes, editHero, onNameChange=(() => null), onHeroSele
           </li>
         )}
       </ul>
-      {editHero &&
-        <div className="hero">
-          <h2>{editHero.name.toUpperCase()} Details</h2>
-          <div><span>id: </span>{editHero.id}</div>
-          <div>
-            <label>name:
-              <input placeholder="name" value={editHero.name} onChange={e => onNameChange(e.target.value)}/>
-            </label>
-          </div>
-        </div>
-      }
+      <HeroDetail/>
     </div>
   );
 }
@@ -49,7 +38,6 @@ function mapState({ heroes, editHero }: State) {
 }
 
 const mapDispatch = {
-  onNameChange: actions.nameChange,
   onHeroSelect: actions.heroSelect,
 }
 
