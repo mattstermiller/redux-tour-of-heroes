@@ -1,12 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, Store } from 'redux';
 import * as actions from './actions';
 import App from './App';
 import Hero from './hero'
-import { HEROES } from './mock-heroes';
+import * as HeroService from './HeroService'
 
 import './index.css';
 
@@ -16,12 +15,15 @@ export interface State {
 }
 
 const initialState : State = {
-  heroes: HEROES,
+  heroes: [],
   editHero: null,
 }
 
 function reducer(state: State, action: actions.HeroAction): State {
   switch (action.type) {
+    case actions.LOAD_HEROES:
+      let heroes = HeroService.getHeroes();
+      return { ...state, heroes: heroes };
     case actions.CHANGE_NAME:
       if (state.editHero) {
         let editHero = {...state.editHero, name: action.name };
@@ -37,7 +39,7 @@ function reducer(state: State, action: actions.HeroAction): State {
   }
 }
 
-const store = createStore<State, any, any, any>(reducer, initialState);
+const store: Store<State, actions.HeroAction> = createStore(reducer, initialState);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -45,3 +47,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root') as HTMLElement
 );
+
+store.dispatch(actions.loadHeroes());
