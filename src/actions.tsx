@@ -1,4 +1,4 @@
-import Hero from './hero';
+import { Hero } from './model';
 
 export const LOAD_HEROES = 'LOAD_HEROES';
 export interface LoadHeroes {

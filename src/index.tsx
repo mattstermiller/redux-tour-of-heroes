@@ -2,28 +2,17 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, Store } from 'redux';
+import { State, initialState } from './model';
 import * as actions from './actions';
 import App from './App';
-import Hero from './hero'
-import * as HeroService from './HeroService'
+import { getHeroes } from './HeroService'
 
 import './index.css';
-
-export interface State {
-  heroes: Hero[],
-  editHero: Hero | null,
-}
-
-const initialState : State = {
-  heroes: [],
-  editHero: null,
-}
 
 function reducer(state: State, action: actions.HeroAction): State {
   switch (action.type) {
     case actions.LOAD_HEROES:
-      let heroes = HeroService.getHeroes();
-      return { ...state, heroes: heroes };
+      return { ...state, heroes: getHeroes() };
     case actions.CHANGE_NAME:
       if (state.editHero) {
         let editHero = {...state.editHero, name: action.name };
