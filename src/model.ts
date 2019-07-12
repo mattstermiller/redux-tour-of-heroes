@@ -6,11 +6,13 @@ export interface Hero {
 export interface State {
   heroes: Hero[],
   isLoadingHeroes: boolean,
+  loadHeroesError: string | null,
   editHero: Hero | null,
 }
 
 export const initialState : State = {
   heroes: [],
   isLoadingHeroes: false,
+  loadHeroesError: null,
   editHero: null,
 }
