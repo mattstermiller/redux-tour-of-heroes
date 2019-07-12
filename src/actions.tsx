@@ -1,29 +1,10 @@
+import { createStandardAction as stdAction, ActionType } from 'typesafe-actions'
 import { Hero } from './model';
 
-export const LOAD_HEROES = 'LOAD_HEROES';
-export interface LoadHeroes {
-    type: typeof LOAD_HEROES;
-}
-export function loadHeroes(): LoadHeroes {
-    return { type: LOAD_HEROES };
+export module Actions {
+    export const loadHeroes = stdAction('LOAD_HEROES')();
+    export const changeName = stdAction('CHANGE_NAME')<string>();
+    export const selectHero = stdAction('SELECT_HERO')<Hero>();
 }
 
-export const CHANGE_NAME = 'CHANGE_NAME';
-export interface ChangeName {
-    type: typeof CHANGE_NAME;
-    name: string
-}
-export function changeName(name: string): ChangeName {
-    return { type: CHANGE_NAME, name };
-}
-
-export const SELECT_HERO = 'SELECT_HERO';
-export interface SelectHero {
-    type: typeof SELECT_HERO;
-    hero: Hero
-}
-export function selectHero(hero: Hero): SelectHero {
-    return { type: SELECT_HERO, hero };
-}
-
-export type HeroAction = LoadHeroes | ChangeName | SelectHero;
+export type HeroAction = ActionType<typeof Actions>;

@@ -3,13 +3,13 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, Store } from 'redux';
 import { State, initialState } from './model';
-import * as actions from './actions';
+import { Actions, HeroAction } from './actions';
 import { reducer } from './reducers';
 import App from './App';
 
 import './index.css';
 
-const store: Store<State, actions.HeroAction> = createStore(reducer, initialState);
+const store: Store<State, HeroAction> = createStore(reducer, initialState);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -18,4 +18,4 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement
 );
 
-store.dispatch(actions.loadHeroes());
+store.dispatch(Actions.loadHeroes());

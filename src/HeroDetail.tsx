@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Hero, State } from './model';
-import * as actions from './actions';
+import { Actions } from './actions';
 
 import './Heroes.css';
 
@@ -33,7 +33,7 @@ function mapState({ editHero }: State) {
 }
 
 const mapDispatch = {
-  changeName: actions.changeName,
+  changeName: Actions.changeName,
 }
 
 export default connect(mapState, mapDispatch)(HeroDetail);

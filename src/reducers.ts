@@ -1,21 +1,22 @@
 import { State } from './model'
-import * as actions from './actions';
+import { Actions, HeroAction } from './actions';
 import { getHeroes } from './HeroService'
+import { getType } from 'typesafe-actions'
 
-export function reducer(state: State, action: actions.HeroAction): State {
+export function reducer(state: State, action: HeroAction): State {
   switch (action.type) {
-    case actions.LOAD_HEROES:
+    case getType(Actions.loadHeroes):
       return { ...state, heroes: getHeroes() };
-    case actions.CHANGE_NAME:
+    case getType(Actions.changeName):
       if (state.editHero) {
-        let editHero = {...state.editHero, name: action.name };
+        let editHero = {...state.editHero, name: action.payload };
         let heroes = state.heroes.map(h => h.id === editHero.id ? editHero : h);
         return { ...state, editHero: editHero, heroes: heroes };
       } else {
         return state;
       }
-    case actions.SELECT_HERO:
-      return { ...state, editHero: action.hero };
+    case getType(Actions.selectHero):
+      return { ...state, editHero: action.payload };
     default:
       return state;
   }
