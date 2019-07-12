@@ -1,12 +1,13 @@
 import { State } from './model'
 import { Actions, HeroAction } from './actions';
-import { getHeroes } from './HeroService'
 import { getType } from 'typesafe-actions'
 
 export function reducer(state: State, action: HeroAction): State {
   switch (action.type) {
-    case getType(Actions.loadHeroes):
-      return { ...state, heroes: getHeroes() };
+    case getType(Actions.loadHeroesBegin):
+      return { ...state, heroes: [], isLoadingHeroes: true };
+    case getType(Actions.loadHeroesSuccess):
+      return { ...state, heroes: action.payload, isLoadingHeroes: false };
     case getType(Actions.changeName):
       if (state.editHero) {
         let editHero = {...state.editHero, name: action.payload };

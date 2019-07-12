@@ -6,8 +6,8 @@ import HeroDetail from './HeroDetail'
 
 import './Heroes.css';
 
-function mapState({ heroes, editHero }: State) {
-  return { heroes, editHero };
+function mapState({ heroes, editHero, isLoadingHeroes }: State) {
+  return { heroes, editHero, isLoading: isLoadingHeroes };
 }
 
 const mapDispatch = {
@@ -16,10 +16,13 @@ const mapDispatch = {
 
 type Props = ReturnType<typeof mapState> & typeof mapDispatch
 
-export function Heroes({ heroes, editHero, selectHero }: Props) {
+export function Heroes({ heroes, editHero, isLoading, selectHero }: Props) {
   return (
     <div>
       <h2>My Heroes</h2>
+      {isLoading && 
+        <div>Loading, please wait...</div>
+      }
       <ul className="heroes">
         {heroes.map(hero =>
           <li
