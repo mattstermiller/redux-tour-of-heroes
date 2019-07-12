@@ -8,7 +8,11 @@ function sleep(ms: number) {
 
 function* loadHeroes() {
   yield sleep(1000);
-  yield put(Actions.loadHeroesSuccess(HEROES));
+  if (Math.random() > 0.5) {
+    yield put(Actions.loadHeroesError("Failed to connect."));
+  } else {
+    yield put(Actions.loadHeroesSuccess(HEROES));
+  }
 }
 
 function* watchLoadHeroes() {

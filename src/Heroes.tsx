@@ -1,27 +1,37 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import { State } from './model';
-import { Actions } from './actions';
+import { Actions, HeroAction } from './actions';
 import HeroDetail from './HeroDetail'
 
 import './Heroes.css';
 
-function mapState({ heroes, editHero, isLoadingHeroes }: State) {
-  return { heroes, editHero, isLoading: isLoadingHeroes };
+function mapState({ heroes, editHero, isLoadingHeroes, loadHeroesError: loadError }: State) {
+  return { heroes, editHero, isLoading: isLoadingHeroes, loadError: loadError };
 }
 
-const mapDispatch = {
-  selectHero: Actions.selectHero,
+function mapDispatch(dispatch: Dispatch<HeroAction>) {
+  return bindActionCreators({
+    selectHero: Actions.selectHero,
+    loadHeroes: Actions.loadHeroesBegin,
+  }, dispatch);
 }
 
-type Props = ReturnType<typeof mapState> & typeof mapDispatch
+type Props = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>
 
-export function Heroes({ heroes, editHero, isLoading, selectHero }: Props) {
+export function Heroes({ heroes, editHero, isLoading, loadError, selectHero, loadHeroes }: Props) {
   return (
     <div>
       <h2>My Heroes</h2>
       {isLoading && 
         <div>Loading, please wait...</div>
+      }
+      {loadError &&
+        <div>
+          <div className="error">Error loading Heroes: {loadError}</div>
+          <button onClick={loadHeroes}>Try Again</button>
+        </div>
       }
       <ul className="heroes">
         {heroes.map(hero =>
