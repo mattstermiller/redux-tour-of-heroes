@@ -1,16 +1,21 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Hero, State } from './model';
+import { State } from './model';
 import { Actions } from './actions';
 
 import './Heroes.css';
 
-interface Props {
-  editHero: Hero | null;
-  changeName?: (name: string) => void;
+function mapState({ editHero }: State) {
+  return { editHero };
 }
 
-export function HeroDetail({ editHero, changeName=(() => null) }: Props) {
+const mapDispatch = {
+  changeName: Actions.changeName,
+}
+
+type Props = ReturnType<typeof mapState> & typeof mapDispatch
+
+export function HeroDetail({ editHero, changeName }: Props) {
   if (editHero) {
     return (
       <div className="hero">
@@ -26,14 +31,6 @@ export function HeroDetail({ editHero, changeName=(() => null) }: Props) {
   } else {
     return null;
   }
-}
-
-function mapState({ editHero }: State) {
-  return { editHero };
-}
-
-const mapDispatch = {
-  changeName: Actions.changeName,
 }
 
 export default connect(mapState, mapDispatch)(HeroDetail);
