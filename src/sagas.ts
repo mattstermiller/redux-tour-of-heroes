@@ -10,8 +10,10 @@ function* loadHeroes() {
   yield sleep(1000);
   if (Math.random() > 0.5) {
     yield put(Actions.loadHeroesError("Failed to connect."));
+    yield put(Actions.addMessage("sagas: error attempting to fetch heroes"));
   } else {
     yield put(Actions.loadHeroesSuccess(HEROES));
+    yield put(Actions.addMessage("sagas: fetched heroes"));
   }
 }
 

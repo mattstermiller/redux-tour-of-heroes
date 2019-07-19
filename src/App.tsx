@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import Heroes from './Heroes';
+import Messages from './Messages';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <h1>Tour of Heroes</h1>
       </div>
       <Heroes/>
+      <Messages/>
     </div>
   );
 }
