@@ -1,28 +1,35 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
-import { HEROES } from './mock-heroes';
+import { put, call, takeLatest, all } from 'redux-saga/effects';
+import { getType } from 'typesafe-actions';
 import { Actions } from './actions'
+import { Hero } from './model';
 
-function sleep(ms: number) {
-  return new Promise(f => setTimeout(f, ms));
-}
+const heroesApi = 'http://localhost:5000/heroes';
 
-function* loadHeroes() {
-  yield sleep(1000);
-  if (Math.random() > 0.5) {
-    yield put(Actions.loadHeroesError("Failed to connect."));
-    yield put(Actions.addMessage("sagas: error attempting to fetch heroes"));
+async function fetchJson(input: RequestInfo, init?: RequestInit | undefined) {
+  const response = await fetch(input, init);
+  if (response.ok) {
+    return await response.json();
   } else {
-    yield put(Actions.loadHeroesSuccess(HEROES));
-    yield put(Actions.addMessage("sagas: fetched heroes"));
+    const text = await response.text();
+    throw new Error(text);
   }
 }
 
-function* watchLoadHeroes() {
-  yield takeLatest(Actions.loadHeroesBegin().type, loadHeroes);
+function* loadHeroes() {
+  yield takeLatest(getType(Actions.loadHeroesBegin), function*() {
+    try {
+      const heroes: Hero[] = yield call(fetchJson, heroesApi);
+      yield put(Actions.loadHeroesSuccess(heroes));
+      yield put(Actions.addMessage("sagas: fetched heroes"));
+    } catch (e) {
+      yield put(Actions.loadHeroesError(e.message));
+      yield put(Actions.addMessage("sagas: error attempting to fetch heroes"));
+    }
+  });
 }
 
 export default function* rootSaga() {
   yield all([
-    watchLoadHeroes(),
+    loadHeroes(),
   ]);
 }
