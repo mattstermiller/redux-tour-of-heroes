@@ -28,6 +28,19 @@ function* loadHeroes() {
   });
 }
 
+function* addHero() {
+  yield takeLatest(getType(Actions.addHeroBegin), function*(action: ReturnType<typeof Actions.addHeroBegin>) {
+    try {
+      const hero = action.payload;
+      const newHero: Hero = yield call(fetchJson, heroesApi, { method: 'POST', body: JSON.stringify(hero) });
+      yield put(Actions.addHeroSuccess(newHero));
+      yield put(Actions.addMessage("sagas: added hero " + newHero.id));
+    } catch (e) {
+      yield put(Actions.addMessage("sagas: error attempting to add hero"));
+    }
+  });
+}
+
 function* updateHero() {
   yield takeLatest(getType(Actions.updateHero), function*(action: ReturnType<typeof Actions.updateHero>) {
     try {
@@ -43,6 +56,7 @@ function* updateHero() {
 export default function* rootSaga() {
   yield all([
     loadHeroes(),
+    addHero(),
     updateHero(),
   ]);
 }
