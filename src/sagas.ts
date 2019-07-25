@@ -53,10 +53,24 @@ function* updateHero() {
   });
 }
 
+function* deleteHero() {
+  yield takeLatest(getType(Actions.deleteHeroBegin), function*(action: ReturnType<typeof Actions.deleteHeroBegin>) {
+    try {
+      const hero = action.payload;
+      yield call(fetchJson, `${heroesApi}/${hero.id}`, { method: 'DELETE' });
+      yield put(Actions.deleteHeroSuccess(hero));
+      yield put(Actions.addMessage("sagas: deleted hero " + hero.id));
+    } catch (e) {
+      yield put(Actions.addMessage("sagas: error attempting to delete hero"));
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     loadHeroes(),
     addHero(),
     updateHero(),
+    deleteHero(),
   ]);
 }

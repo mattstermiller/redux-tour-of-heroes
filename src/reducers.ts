@@ -18,6 +18,8 @@ export function reducer(state: State, action: HeroAction): State {
     case getType(Actions.updateHero):
       const hero = action.payload;
       return { ...state, heroes: state.heroes.map(h => h.id === hero.id ? hero : h) };
+    case getType(Actions.deleteHeroSuccess):
+      return { ...state, heroes: state.heroes.filter(h => h.id !== action.payload.id) };
     case getType(Actions.addMessage):
       let messages = state.messages.slice();
       messages.push(action.payload)
