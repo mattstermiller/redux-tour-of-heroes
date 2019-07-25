@@ -1,26 +1,25 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import { State } from './model';
 import { Actions, HeroAction } from './actions';
-import HeroDetail from './HeroDetail'
 
 import './Heroes.css';
 
-function mapState({ heroes, editHero, isLoadingHeroes, loadHeroesError: loadError }: State) {
-  return { heroes, editHero, isLoading: isLoadingHeroes, loadError: loadError };
+function mapState({ heroes, isLoadingHeroes, loadHeroesError: loadError }: State) {
+  return { heroes, isLoading: isLoadingHeroes, loadError: loadError };
 }
 
 function mapDispatch(dispatch: Dispatch<HeroAction>) {
   return bindActionCreators({
-    selectHero: Actions.selectHero,
     loadHeroes: Actions.loadHeroesBegin,
   }, dispatch);
 }
 
 type Props = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>
 
-export function Heroes({ heroes, editHero, isLoading, loadError, selectHero, loadHeroes }: Props) {
+export function Heroes({ heroes, isLoading, loadError, loadHeroes }: Props) {
   return (
     <div>
       <h2>My Heroes</h2>
@@ -35,16 +34,13 @@ export function Heroes({ heroes, editHero, isLoading, loadError, selectHero, loa
       }
       <ul className="heroes">
         {heroes.map(hero =>
-          <li
-            key={hero.id}
-            className={hero === editHero ? "selected" : ""}
-            onClick={() => selectHero(hero)}
-            >
-            <span className="badge">{hero.id}</span> {hero.name}
+          <li key={hero.id}>
+            <Link to={`/detail/${hero.id}`}>
+              <span className="badge">{hero.id}</span> {hero.name}
+            </Link>
           </li>
         )}
       </ul>
-      <HeroDetail/>
     </div>
   );
 }
