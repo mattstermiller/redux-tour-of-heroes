@@ -28,8 +28,21 @@ function* loadHeroes() {
   });
 }
 
+function* updateHero() {
+  yield takeLatest(getType(Actions.updateHero), function*(action: ReturnType<typeof Actions.updateHero>) {
+    try {
+      const hero = action.payload;
+      yield call(fetchJson, heroesApi, { method: 'PUT', body: JSON.stringify(hero) });
+      yield put(Actions.addMessage("sagas: updated hero " + hero.id));
+    } catch (e) {
+      yield put(Actions.addMessage("sagas: error attempting to update hero"));
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     loadHeroes(),
+    updateHero(),
   ]);
 }

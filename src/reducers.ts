@@ -10,15 +10,9 @@ export function reducer(state: State, action: HeroAction): State {
       return { ...state, heroes: action.payload, isLoadingHeroes: false };
     case getType(Actions.loadHeroesError):
       return { ...state, loadHeroesError: action.payload, isLoadingHeroes: false };
-    case getType(Actions.changeName):
-      let i = state.heroes.findIndex(h => h.id === action.payload.id);
-      if (i >= 0) {
-        let heroes = state.heroes.slice();
-        heroes[i] = {...heroes[i], name: action.payload.newName };
-        return { ...state, heroes: heroes };
-      } else {
-        return state;
-      }
+    case getType(Actions.updateHero):
+      const hero = action.payload;
+      return { ...state, heroes: state.heroes.map(h => h.id === hero.id ? hero : h) };
     case getType(Actions.addMessage):
       let messages = state.messages.slice();
       messages.push(action.payload)

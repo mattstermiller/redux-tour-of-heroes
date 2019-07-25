@@ -14,12 +14,13 @@ function mapState({ heroes }: State, { match }: RouteComponentProps<MatchParams>
 }
 
 const mapDispatch = {
-  changeName: Actions.changeName,
+  updateHero: Actions.updateHero,
 }
 
-type Props = ReturnType<typeof mapState> & typeof mapDispatch
+type Props = ReturnType<typeof mapState> & typeof mapDispatch;
 
-export function HeroDetail({ editHero, changeName }: Props) {
+export function HeroDetail({ editHero, updateHero }: Props) {
+  const [editName, setEditName] = React.useState(editHero ? editHero.name : '');
   if (editHero) {
     return (
       <div className="HeroDetail">
@@ -28,11 +29,14 @@ export function HeroDetail({ editHero, changeName }: Props) {
         <div>
           <label>name:
             <input placeholder="name"
-                   value={editHero.name}
-                   onChange={e => changeName({ id: editHero.id, newName: e.target.value})}/>
+                   value={editName} onChange={e => setEditName(e.target.value)}/>
           </label>
         </div>
-        <button onClick={() => history.back()}>go back</button>
+        <button onClick={() => {
+          history.back();
+          updateHero({ ...editHero, name: editName});
+          }}>save</button>
+        <button onClick={() => history.back()}>cancel</button>
       </div>
     )
   } else {
