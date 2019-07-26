@@ -1,4 +1,4 @@
-import { put, call, takeLatest, all } from 'redux-saga/effects';
+import { put, call, takeLatest, all, debounce } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 import { Actions } from './actions'
 import { Hero } from './model';
@@ -24,6 +24,20 @@ function* loadHeroes() {
     } catch (e) {
       yield put(Actions.loadHeroesError(e.message));
       yield put(Actions.addMessage("sagas: error attempting to fetch heroes"));
+    }
+  });
+}
+
+function* searchHeroes() {
+  yield debounce(300, getType(Actions.searchHeroesBegin), function*(action: ReturnType<typeof Actions.searchHeroesBegin>) {
+    try {
+      const terms = action.payload;
+      if (!terms) return;
+      const heroes: Hero[] = yield call(fetchJson, heroesApi + `/?name=${encodeURIComponent(terms)}`);
+      yield put(Actions.searchHeroesSuccess(heroes));
+      yield put(Actions.addMessage(`sagas: found ${heroes.length} heroes matching "${terms}"`));
+    } catch (e) {
+      yield put(Actions.addMessage("sagas: error attempting to search heroes"));
     }
   });
 }
@@ -69,6 +83,7 @@ function* deleteHero() {
 export default function* rootSaga() {
   yield all([
     loadHeroes(),
+    searchHeroes(),
     addHero(),
     updateHero(),
     deleteHero(),
