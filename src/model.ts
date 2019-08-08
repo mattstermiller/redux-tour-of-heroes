@@ -5,10 +5,12 @@ export interface Hero {
 
 export interface State {
   heroes: Hero[],
+  isLoadingHeroes: boolean,
   editHero: Hero | null,
 }
 
 export const initialState : State = {
   heroes: [],
+  isLoadingHeroes: false,
   editHero: null,
 }

@@ -18,6 +18,8 @@
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.0",
     "redux": "^4.0.1",
+    "redux-observable": "1.0.x",
+    "rxjs": "^6.5.2",
     "typesafe-actions": "^4.4.2",
     "typescript": "^3.5.2"
   },
