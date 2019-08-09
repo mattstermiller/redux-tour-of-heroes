@@ -11,15 +11,14 @@ export function reducer(state: State, action: HeroAction): State {
     case getType(Actions.loadHeroesError):
       return { ...state, loadHeroesError: action.payload, isLoadingHeroes: false };
     case getType(Actions.changeName):
-      if (state.editHero) {
-        let editHero = {...state.editHero, name: action.payload };
-        let heroes = state.heroes.map(h => h.id === editHero.id ? editHero : h);
-        return { ...state, editHero: editHero, heroes: heroes };
+      let i = state.heroes.findIndex(h => h.id === action.payload.id);
+      if (i >= 0) {
+        let heroes = state.heroes.slice();
+        heroes[i] = {...heroes[i], name: action.payload.newName };
+        return { ...state, heroes: heroes };
       } else {
         return state;
       }
-    case getType(Actions.selectHero):
-      return { ...state, editHero: action.payload };
     case getType(Actions.addMessage):
       let messages = state.messages.slice();
       messages.push(action.payload)
