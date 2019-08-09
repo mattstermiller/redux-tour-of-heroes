@@ -56,8 +56,22 @@ const updateHero: Epic<HeroAction> = action$ => action$.pipe(
   )
 );
 
+const deleteHero: Epic<HeroAction> = action$ => action$.pipe(
+  filter(isActionOf(Actions.deleteHeroBegin)),
+  mergeMap(action =>
+    from(fetchJson(`${heroesApi}/${action.payload.id}`, { method: 'DELETE' })).pipe(
+      mergeMap(() => of(
+        Actions.deleteHeroSuccess(action.payload),
+        Actions.addMessage("epics: deleted hero " + action.payload.id)
+      )),
+      catchError(e => of(Actions.addMessage("epics: error attempting to delete hero")))
+    )
+  )
+);
+
 export default combineEpics(
   loadHeroes,
   addHero,
-  updateHero
+  updateHero,
+  deleteHero
 );

@@ -8,6 +8,8 @@ export module Actions {
     export const addHeroBegin = stdAction('ADD_HERO_BEGIN')<Hero>();
     export const addHeroSuccess = stdAction('ADD_HERO_SUCCESS')<Hero>();
     export const updateHero = stdAction('UPDATE_HERO')<Hero>();
+    export const deleteHeroBegin = stdAction('DELETE_HERO_BEGIN')<Hero>();
+    export const deleteHeroSuccess = stdAction('DELETE_HERO_SUCCESS')<Hero>();
     export const addMessage = stdAction('ADD_MESSAGE')<string>();
     export const clearMessages = stdAction('CLEAR_MESSAGES')();
 }

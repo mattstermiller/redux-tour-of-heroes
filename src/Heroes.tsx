@@ -15,12 +15,13 @@ function mapDispatch(dispatch: Dispatch<HeroAction>) {
   return bindActionCreators({
     loadHeroes: Actions.loadHeroesBegin,
     addHero: Actions.addHeroBegin,
+    deleteHero: Actions.deleteHeroBegin,
   }, dispatch);
 }
 
 type Props = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>
 
-export function Heroes({ heroes, isLoading, loadError, loadHeroes, addHero }: Props) {
+export function Heroes({ heroes, isLoading, loadError, loadHeroes, addHero, deleteHero }: Props) {
   const [newName, setNewName] = React.useState('');
   return (
     <div>
@@ -49,6 +50,7 @@ export function Heroes({ heroes, isLoading, loadError, loadHeroes, addHero }: Pr
             <Link to={`/detail/${hero.id}`}>
               <span className="badge">{hero.id}</span> {hero.name}
             </Link>
+            <button className="delete" title="delete hero" onClick={() => deleteHero(hero)}>x</button>
           </li>
         )}
       </ul>
