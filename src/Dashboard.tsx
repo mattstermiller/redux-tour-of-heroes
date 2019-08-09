@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { State } from './model';
+import HeroSearch from './HeroSearch';
 
 import './Dashboard.css';
 
@@ -24,6 +25,7 @@ function Dashboard({ heroes }: Props) {
           </Link>
         )}
       </div>
+      <HeroSearch/>
     </div>
   );
 }

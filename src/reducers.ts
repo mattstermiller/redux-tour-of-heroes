@@ -10,6 +10,10 @@ export function reducer(state: State, action: HeroAction): State {
       return { ...state, heroes: action.payload, isLoadingHeroes: false };
     case getType(Actions.loadHeroesError):
       return { ...state, loadHeroesError: action.payload, isLoadingHeroes: false };
+    case getType(Actions.searchHeroesBegin):
+      return { ...state, searchInput: action.payload, searchResults: [] };
+    case getType(Actions.searchHeroesSuccess):
+      return { ...state, searchResults: action.payload };
     case getType(Actions.addHeroSuccess):
       const heroes = state.heroes.slice();
       heroes.push(action.payload);

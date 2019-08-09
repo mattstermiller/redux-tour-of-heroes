@@ -1,6 +1,6 @@
 import { Epic, combineEpics } from 'redux-observable';
 import { from, of } from 'rxjs';
-import { filter, map, mergeMap, catchError } from 'rxjs/operators';
+import { filter, map, mergeMap, debounceTime, catchError } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { Actions, HeroAction } from './actions';
 import { Hero } from './model';
@@ -29,6 +29,21 @@ const loadHeroes: Epic<HeroAction> = action$ => action$.pipe(
         Actions.loadHeroesError(e.message),
         Actions.addMessage("epics: error attempting to fetch heroes")
       ))
+    )
+  )
+);
+
+const searchHeroes: Epic<HeroAction> = action$ => action$.pipe(
+  filter(isActionOf(Actions.searchHeroesBegin)),
+  filter(action => <any>action.payload),
+  debounceTime(300),
+  mergeMap(action =>
+    from(fetchJson(heroesApi + `/?name=${encodeURIComponent(action.payload)}`)).pipe(
+      mergeMap(heroes => of(
+        Actions.searchHeroesSuccess(heroes),
+        Actions.addMessage(`epics: found ${heroes.length} heroes matching "${action.payload}"`)
+      )),
+      catchError(e => of(Actions.addMessage("epics: error attempting to search heroes")))
     )
   )
 );
@@ -71,6 +86,7 @@ const deleteHero: Epic<HeroAction> = action$ => action$.pipe(
 
 export default combineEpics(
   loadHeroes,
+  searchHeroes,
   addHero,
   updateHero,
   deleteHero

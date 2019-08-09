@@ -5,6 +5,8 @@ export module Actions {
     export const loadHeroesBegin = stdAction('LOAD_HEROES_BEGIN')();
     export const loadHeroesSuccess = stdAction('LOAD_HEROES_SUCCESS')<Hero[]>();
     export const loadHeroesError = stdAction('LOAD_HEROES_ERROR')<string>();
+    export const searchHeroesBegin = stdAction('SEARCH_HEROES_BEGIN')<string>();
+    export const searchHeroesSuccess = stdAction('SEARCH_HEROES_SUCCESS')<Hero[]>();
     export const addHeroBegin = stdAction('ADD_HERO_BEGIN')<Hero>();
     export const addHeroSuccess = stdAction('ADD_HERO_SUCCESS')<Hero>();
     export const updateHero = stdAction('UPDATE_HERO')<Hero>();
