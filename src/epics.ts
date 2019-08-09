@@ -3,25 +3,27 @@ import { from, of } from 'rxjs';
 import { filter, mergeMap, catchError } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { Actions, HeroAction } from './actions';
-import { HEROES } from './mock-heroes';
 
-function sleep(ms: number) {
-  return new Promise(f => setTimeout(f, ms));
+const heroesApi = 'http://localhost:5000/heroes';
+
+async function fetchJson(input: RequestInfo, init?: RequestInit | undefined) {
+  const response = await fetch(input, init);
+  if (response.ok) {
+    return await response.json();
+  } else {
+    const text = await response.text();
+    throw new Error(text);
+  }
 }
 
 const loadHeroes: Epic<HeroAction> = action$ => action$.pipe(
   filter(isActionOf(Actions.loadHeroesBegin)),
   mergeMap(action =>
-    from(sleep(1000)).pipe(
-      mergeMap(() => {
-        if (Math.random() > 0.5) {
-          throw new Error("Failed to connect.");
-        }
-        return of(
-          Actions.loadHeroesSuccess(HEROES),
-          Actions.addMessage("epics: fetched heroes")
-        );
-      }),
+    from(fetchJson(heroesApi)).pipe(
+      mergeMap(heroes => of(
+        Actions.loadHeroesSuccess(heroes),
+        Actions.addMessage("epics: fetched heroes")
+      )),
       catchError(e => of(
         Actions.loadHeroesError(e.message),
         Actions.addMessage("epics: error attempting to fetch heroes")
