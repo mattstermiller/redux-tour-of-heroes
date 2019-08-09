@@ -1,6 +1,6 @@
 import { Epic, combineEpics } from 'redux-observable';
 import { from, of } from 'rxjs';
-import { filter, map, mergeMap, catchError } from 'rxjs/operators';
+import { filter, mergeMap, catchError } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { Actions, HeroAction } from './actions';
 import { HEROES } from './mock-heroes';
@@ -13,13 +13,19 @@ const loadHeroes: Epic<HeroAction> = action$ => action$.pipe(
   filter(isActionOf(Actions.loadHeroesBegin)),
   mergeMap(action =>
     from(sleep(1000)).pipe(
-      map(() => {
+      mergeMap(() => {
         if (Math.random() > 0.5) {
           throw new Error("Failed to connect.");
         }
-        return Actions.loadHeroesSuccess(HEROES);
+        return of(
+          Actions.loadHeroesSuccess(HEROES),
+          Actions.addMessage("epics: fetched heroes")
+        );
       }),
-      catchError(err => of(Actions.loadHeroesError(err.message)))
+      catchError(e => of(
+        Actions.loadHeroesError(e.message),
+        Actions.addMessage("epics: error attempting to fetch heroes")
+      ))
     )
   )
 );

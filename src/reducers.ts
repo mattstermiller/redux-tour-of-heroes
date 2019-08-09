@@ -20,6 +20,12 @@ export function reducer(state: State, action: HeroAction): State {
       }
     case getType(Actions.selectHero):
       return { ...state, editHero: action.payload };
+    case getType(Actions.addMessage):
+      let messages = state.messages.slice();
+      messages.push(action.payload)
+      return { ...state, messages: messages };
+    case getType(Actions.clearMessages):
+      return { ...state, messages: [] };
     default:
       return state;
   }

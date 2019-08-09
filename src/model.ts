@@ -8,6 +8,7 @@ export interface State {
   isLoadingHeroes: boolean,
   loadHeroesError: string | null,
   editHero: Hero | null,
+  messages: string[],
 }
 
 export const initialState : State = {
@@ -15,4 +16,5 @@ export const initialState : State = {
   isLoadingHeroes: false,
   loadHeroesError: null,
   editHero: null,
+  messages: [],
 }
