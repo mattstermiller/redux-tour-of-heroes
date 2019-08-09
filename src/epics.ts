@@ -1,8 +1,9 @@
 import { Epic, combineEpics } from 'redux-observable';
 import { from, of } from 'rxjs';
-import { filter, mergeMap, catchError } from 'rxjs/operators';
+import { filter, map, mergeMap, catchError } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { Actions, HeroAction } from './actions';
+import { Hero } from './model';
 
 const heroesApi = 'http://localhost:5000/heroes';
 
@@ -32,6 +33,19 @@ const loadHeroes: Epic<HeroAction> = action$ => action$.pipe(
   )
 );
 
+const addHero: Epic<HeroAction> = action$ => action$.pipe(
+  filter(isActionOf(Actions.addHeroBegin)),
+  mergeMap(action =>
+    from(fetchJson(heroesApi, { method: 'POST', body: JSON.stringify(action.payload) })).pipe(
+      mergeMap((newHero: Hero) => of(
+        Actions.addHeroSuccess(newHero),
+        Actions.addMessage("epics: added hero " + newHero.id)
+      )),
+      catchError(e => of(Actions.addMessage("epics: error attempting to add hero")))
+    )
+  )
+);
+
 const updateHero: Epic<HeroAction> = action$ => action$.pipe(
   filter(isActionOf(Actions.updateHero)),
   mergeMap(action =>
@@ -42,4 +56,8 @@ const updateHero: Epic<HeroAction> = action$ => action$.pipe(
   )
 );
 
-export default combineEpics(loadHeroes, updateHero);
+export default combineEpics(
+  loadHeroes,
+  addHero,
+  updateHero
+);

@@ -10,6 +10,11 @@ export function reducer(state: State, action: HeroAction): State {
       return { ...state, heroes: action.payload, isLoadingHeroes: false };
     case getType(Actions.loadHeroesError):
       return { ...state, loadHeroesError: action.payload, isLoadingHeroes: false };
+    case getType(Actions.addHeroSuccess):
+      const heroes = state.heroes.slice();
+      heroes.push(action.payload);
+      heroes.sort((a, b) => a.name.localeCompare(b.name));
+      return { ...state, heroes };
     case getType(Actions.updateHero):
       const hero = action.payload;
       return { ...state, heroes: state.heroes.map(h => h.id === hero.id ? hero : h) };

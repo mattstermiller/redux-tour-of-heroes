@@ -14,12 +14,14 @@ function mapState({ heroes, isLoadingHeroes, loadHeroesError: loadError }: State
 function mapDispatch(dispatch: Dispatch<HeroAction>) {
   return bindActionCreators({
     loadHeroes: Actions.loadHeroesBegin,
+    addHero: Actions.addHeroBegin,
   }, dispatch);
 }
 
 type Props = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>
 
-export function Heroes({ heroes, isLoading, loadError, loadHeroes }: Props) {
+export function Heroes({ heroes, isLoading, loadError, loadHeroes, addHero }: Props) {
+  const [newName, setNewName] = React.useState('');
   return (
     <div>
       <h2>My Heroes</h2>
@@ -32,6 +34,15 @@ export function Heroes({ heroes, isLoading, loadError, loadHeroes }: Props) {
           <button onClick={loadHeroes}>Try Again</button>
         </div>
       }
+      <div>
+        <label>Hero name:&nbsp;
+          <input value={newName} onChange={e => setNewName(e.target.value)}/>
+        </label>
+        <button onClick={() => {
+          setNewName('');
+          addHero({ id: 0, name: newName });
+          }}>add</button>
+      </div>
       <ul className="heroes">
         {heroes.map(hero =>
           <li key={hero.id}>
