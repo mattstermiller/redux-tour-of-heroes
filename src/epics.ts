@@ -32,4 +32,14 @@ const loadHeroes: Epic<HeroAction> = action$ => action$.pipe(
   )
 );
 
-export default combineEpics(loadHeroes);
+const updateHero: Epic<HeroAction> = action$ => action$.pipe(
+  filter(isActionOf(Actions.updateHero)),
+  mergeMap(action =>
+    from(fetchJson(heroesApi, { method: 'PUT', body: JSON.stringify(action.payload) })).pipe(
+      map(() => Actions.addMessage("epics: updated hero " + action.payload.id)),
+      catchError(e => of(Actions.addMessage("epics: error attempting to update hero")))
+    )
+  )
+);
+
+export default combineEpics(loadHeroes, updateHero);
