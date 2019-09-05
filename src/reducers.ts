@@ -4,17 +4,17 @@ import { getType } from 'typesafe-actions'
 
 export function reducer(state: State, action: HeroAction): State {
   switch (action.type) {
-    case getType(Actions.loadHeroesBegin):
+    case getType(Actions.loadHeroes.request):
       return { ...state, heroes: [], isLoadingHeroes: true, loadHeroesError: null };
-    case getType(Actions.loadHeroesSuccess):
+    case getType(Actions.loadHeroes.success):
       return { ...state, heroes: action.payload, isLoadingHeroes: false };
-    case getType(Actions.loadHeroesError):
+    case getType(Actions.loadHeroes.failure):
       return { ...state, loadHeroesError: action.payload, isLoadingHeroes: false };
-    case getType(Actions.searchHeroesBegin):
+    case getType(Actions.searchHeroes.request):
       return { ...state, searchInput: action.payload, searchResults: [] };
-    case getType(Actions.searchHeroesSuccess):
+    case getType(Actions.searchHeroes.success):
       return { ...state, searchResults: action.payload };
-    case getType(Actions.addHeroSuccess):
+    case getType(Actions.addHero.success):
       const heroes = state.heroes.slice();
       heroes.push(action.payload);
       heroes.sort((a, b) => a.name.localeCompare(b.name));
@@ -22,7 +22,7 @@ export function reducer(state: State, action: HeroAction): State {
     case getType(Actions.updateHero):
       const hero = action.payload;
       return { ...state, heroes: state.heroes.map(h => h.id === hero.id ? hero : h) };
-    case getType(Actions.deleteHeroSuccess):
+    case getType(Actions.deleteHero.success):
       return { ...state, heroes: state.heroes.filter(h => h.id !== action.payload.id) };
     case getType(Actions.addMessage):
       let messages = state.messages.slice();

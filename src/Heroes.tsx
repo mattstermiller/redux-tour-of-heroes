@@ -13,9 +13,9 @@ function mapState({ heroes, isLoadingHeroes, loadHeroesError: loadError }: State
 
 function mapDispatch(dispatch: Dispatch<HeroAction>) {
   return bindActionCreators({
-    loadHeroes: Actions.loadHeroesBegin,
-    addHero: Actions.addHeroBegin,
-    deleteHero: Actions.deleteHeroBegin,
+    loadHeroes: Actions.loadHeroes.request,
+    addHero: Actions.addHero.request,
+    deleteHero: Actions.deleteHero.request,
   }, dispatch);
 }
 
@@ -32,7 +32,7 @@ export function Heroes({ heroes, isLoading, loadError, loadHeroes, addHero, dele
       {loadError &&
         <div>
           <div className="error">Error loading Heroes: {loadError}</div>
-          <button onClick={loadHeroes}>Try Again</button>
+          <button onClick={() => loadHeroes()}>Try Again</button>
         </div>
       }
       <div>

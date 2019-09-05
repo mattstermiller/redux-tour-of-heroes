@@ -13,7 +13,7 @@ function mapState({ searchInput, searchResults }: State) {
 
 function mapDispatch(dispatch: Dispatch<HeroAction>) {
   return bindActionCreators({
-    searchHeroes: Actions.searchHeroesBegin,
+    searchHeroes: Actions.searchHeroes.request,
   }, dispatch);
 }
 
